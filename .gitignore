@@ -3,7 +3,7 @@
 .Rapp.history
 
 # Session Data files
-.RData
+.RData*
 .RDataTmp
 
 # User-specific files
@@ -47,6 +47,9 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# graphs ignored for now
+plots/*
 
 # Temprorary folders
 costs/
