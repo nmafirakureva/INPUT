@@ -1,0 +1,57 @@
+country,age,arm,cascade,variable,metric,value,dx,frac
+CMR,u2,SOC,Initial care seeking,frac.presented,count,38187,,38187
+CMR,u2,SOC,Screened for TB symptoms,frac.screened,count,28,,28
+CMR,u2,SOC,Presumptive TB,frac.presumptive,count,14,,14
+CMR,u2,SOC,Evaluated for TB,frac.evaluated,count,14,,14
+CMR,u2,SOC,Bacteriologically assessed,frac.bac.assess,count,9,,9
+CMR,u2,SOC,Tested on Xpert,frac.Xpert,count,2,,2
+CMR,u2,SOC,TB diagnosis,frac.diagnosed,count,1,,1
+CMR,u2,INT,Initial care seeking,frac.presented,count,45036,,2370.31578947368
+CMR,u2,INT,Screened for TB symptoms,frac.screened,count,483,,25.421052631579
+CMR,u2,INT,Presumptive TB,frac.presumptive,count,291,,15.3157894736842
+CMR,u2,INT,Evaluated for TB,frac.evaluated,count,279,,14.6842105263158
+CMR,u2,INT,Bacteriologically assessed,frac.bac.assess,count,244,,12.8421052631579
+CMR,u2,INT,Tested on Xpert,frac.Xpert,count,243,,12.7894736842105
+CMR,u2,INT,TB diagnosis,frac.diagnosed,count,19,,1
+CMR,o2,SOC,Initial care seeking,frac.presented,count,5588,,5588
+CMR,o2,SOC,Screened for TB symptoms,frac.screened,count,48,,48
+CMR,o2,SOC,Presumptive TB,frac.presumptive,count,13,,13
+CMR,o2,SOC,Evaluated for TB,frac.evaluated,count,13,,13
+CMR,o2,SOC,Bacteriologically assessed,frac.bac.assess,count,10,,10
+CMR,o2,SOC,Tested on Xpert,frac.Xpert,count,2,,2
+CMR,o2,SOC,TB diagnosis,frac.diagnosed,count,1,,1
+CMR,o2,INT,Initial care seeking,frac.presented,count,7205,,514.642857142857
+CMR,o2,INT,Screened for TB symptoms,frac.screened,count,307,,21.9285714285714
+CMR,o2,INT,Presumptive TB,frac.presumptive,count,178,,12.7142857142857
+CMR,o2,INT,Evaluated for TB,frac.evaluated,count,173,,12.3571428571429
+CMR,o2,INT,Bacteriologically assessed,frac.bac.assess,count,160,,11.4285714285714
+CMR,o2,INT,Tested on Xpert,frac.Xpert,count,159,,11.3571428571429
+CMR,o2,INT,TB diagnosis,frac.diagnosed,count,14,,1
+KEN,u2,SOC,Initial care seeking,frac.presented,count,60438,,1233.42857142857
+KEN,u2,SOC,Screened for TB symptoms,frac.screened,count,225,,4.59183673469388
+KEN,u2,SOC,Presumptive TB,frac.presumptive,count,61,,1.24489795918367
+KEN,u2,SOC,Evaluated for TB,frac.evaluated,count,61,,1.24489795918367
+KEN,u2,SOC,Bacteriologically assessed,frac.bac.assess,count,29,,0.591836734693878
+KEN,u2,SOC,Tested on Xpert,frac.Xpert,count,20,,0.408163265306122
+KEN,u2,SOC,TB diagnosis,frac.diagnosed,count,49,,1
+KEN,u2,INT,Initial care seeking,frac.presented,count,44861,,1869.20833333333
+KEN,u2,INT,Screened for TB symptoms,frac.screened,count,192,,8
+KEN,u2,INT,Presumptive TB,frac.presumptive,count,69,,2.875
+KEN,u2,INT,Evaluated for TB,frac.evaluated,count,65,,2.70833333333333
+KEN,u2,INT,Bacteriologically assessed,frac.bac.assess,count,49,,2.04166666666667
+KEN,u2,INT,Tested on Xpert,frac.Xpert,count,44,,1.83333333333333
+KEN,u2,INT,TB diagnosis,frac.diagnosed,count,25,,1.04166666666667
+KEN,o2,SOC,Initial care seeking,frac.presented,count,17696,,632
+KEN,o2,SOC,Screened for TB symptoms,frac.screened,count,191,,6.82142857142857
+KEN,o2,SOC,Presumptive TB,frac.presumptive,count,45,,1.60714285714286
+KEN,o2,SOC,Evaluated for TB,frac.evaluated,count,45,,1.60714285714286
+KEN,o2,SOC,Bacteriologically assessed,frac.bac.assess,count,25,,0.892857142857143
+KEN,o2,SOC,Tested on Xpert,frac.Xpert,count,19,,0.678571428571429
+KEN,o2,SOC,TB diagnosis,frac.diagnosed,count,28,,1
+KEN,o2,INT,Initial care seeking,frac.presented,count,12512,,736
+KEN,o2,INT,Screened for TB symptoms,frac.screened,count,168,,9.88235294117647
+KEN,o2,INT,Presumptive TB,frac.presumptive,count,72,,4.23529411764706
+KEN,o2,INT,Evaluated for TB,frac.evaluated,count,72,,4.23529411764706
+KEN,o2,INT,Bacteriologically assessed,frac.bac.assess,count,56,,3.29411764705882
+KEN,o2,INT,Tested on Xpert,frac.Xpert,count,49,,2.88235294117647
+KEN,o2,INT,TB diagnosis,frac.diagnosed,count,16,,0.941176470588235

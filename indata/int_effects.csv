@@ -1,0 +1,10 @@
+NAME,DISTRIBUTION,MEDIAN (IQR),DESCRIPTION,SOURCE,NOTES,CATEGORY,"WORKING NOTES, QUERIES, ACTIONS",NOTES - INPUT STUDY
+tb.presumptiveRR,,3.9 (2.4-5.4),Among all children attending the child healthcare services: Proportion with TB suggestive symptoms ,INPUT study ,Extracted from text in main draft,,,
+tb.investigationRR,,2.95 (2.39-3.67),Among children with TB symptoms: proportion investigated for TB (enrolled/screened),INPUT study ,Extracted from text in main draft,,,
+tb.diagnosisRR,,1.32 (0.66-2.61),Among enrolled with presumptive TB: Proportion diagnosed with TB,INPUT study ,Extracted from text in main draft. Different numbers in Table 4: 3.29 [0.21; 50.40],,,
+cmr.tb.presumptiveRR,,4.88 (3.42-6.96),Proportion of child INPUTs screened for TB among declared child INPUTs  < 15 years old ,INPUT study ,Extracted from text in main draft,,,
+cmr.tb.investigationRR,,6.86 (4.22-11.13),Among children with TB symptoms: proportion investigated for TB (enrolled/screened),INPUT study ,Extracted from text in main draft,,,
+cmr.tb.diagnosisRR,,9.75 (1.04-91.84),Among enrolled with presumptive TB: Proportion diagnosed with TB,INPUT study ,Extracted from text in main draft. Different numbers in Table 4: 3.29 [0.21; 50.40],,,
+ken.tb.presumptiveRR,,2.13 (1.6-2.8),Among all children attending the child healthcare services: Proportion with TB suggestive symptoms ,INPUT study ,Extracted from text in main draft,,,
+ken.tb.investigationRR,,2.05 (1.23-3.39),Among children with TB symptoms: proportion investigated for TB (enrolled/screened),INPUT study ,Extracted from text in main draft,,,
+ken.tb.diagnosisRR,,0.94 (0.44-2.01),Among enrolled with presumptive TB: Proportion diagnosed with TB,INPUT study ,Extracted from text in main draft. Different numbers in Table 4: 3.29 [0.21; 50.40],,,
