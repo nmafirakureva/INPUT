@@ -81,27 +81,33 @@ write_sheet(Table2ATTO_formatted,shidneat,sheet="Table2ATTO")
 sa.base <- fread(here('outdata/ICERall.csv'))
 sa.hi <- fread(here('outdata/ICERallhi.csv'))
 sa.lo <- fread(here('outdata/ICERalllo.csv'))
-# sa.succ <- fread(here('outdata/ICERalltxd.csv'))
+sa.effects <- fread(here('outdata/ICERallpooled_eff.csv'))
 # sa.cfr <- fread(here('outdata/ICERallcfr.csv'))
 sa.cfrltfu <- fread(here('outdata/ICERallcfrltfu.csv'))
 sa.cfrwho <- fread(here('outdata/ICERallwhocfr.csv'))
-sa.cfrsystRev<- fread(here('outdata/ICERallsystRev.csv'))
+sa.cfrsystRev <- fread(here('outdata/ICERallsystRev.csv'))
+sa.cfrsystRevtxd <- fread(here('outdata/ICERallsystRevtxd.csv'))
 sa.screen <- fread(here('outdata/ICERallscreen.csv'))
 sa.screenINT <- fread(here('outdata/ICERallscreenINT.csv'))
 
 names(sa.base)[3] <- 'Base case'
 names(sa.hi)[3] <- '5% discount rate'
 names(sa.lo)[3] <- '0% discount rate'
-# names(sa.succ)[3] <- 'ATT completion improvement included'
+names(sa.effects)[3] <- 'Pooled intervention effects'
 names(sa.cfrltfu)[3] <- 'CFR including LTFU'
 names(sa.cfrwho)[3] <- 'WHO CFR'
 names(sa.cfrsystRev)[3] <- 'Systematic review CFR'
+names(sa.cfrsystRevtxd)[3] <- 'Systematic review CFR with improvements in treatment outcome'
 
-names(sa.screen)[3] <- 'Tuberculosis screening rates observed in TIPPI study under SoC'
-names(sa.screenINT)[3] <- 'Tuberculosis screening for all children'
+# names(sa.screen)[3] <- 'Tuberculosis screening rates observed in TIPPI study under SoC'
+# names(sa.screenINT)[3] <- 'Tuberculosis screening for all children'
+names(sa.screen)[3] <- 'Lower tuberculosis screening rates (-20%)'
+names(sa.screenINT)[3] <- 'Higher tuberculosis screening rates (+20%)'
 
-SAll <- Reduce(merge,list(sa.base,sa.lo,sa.hi,sa.cfrltfu,sa.cfrwho,sa.cfrsystRev,sa.screen,sa.screenINT))
+SAll <- Reduce(merge,list(sa.base,sa.lo,sa.hi,sa.cfrltfu,sa.cfrwho,sa.cfrsystRev,sa.cfrsystRevtxd,sa.effects, sa.screen,sa.screenINT))
 SAll <- SAll[,iso3:=NULL]
+SAll <- SAll |>
+  dplyr::mutate_if(is.integer, as.character)
 SAll <- melt(SAll, id.vars = 'country', variable.name = 'Assumption', value.name = 'ICER (US$/DALY averted')
 setkey(SAll, country)
 write_sheet(SAll,shidneat,sheet="SAll")

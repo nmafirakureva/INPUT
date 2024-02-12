@@ -638,8 +638,8 @@ curve(dgamma(x,tmp1$mu[6],scale=tmp1$sig[6]),from=0,to=100)
 
 curve(dgamma(x,tmp[,mid][6]^2/((tmp[,hi][6]-tmp[,lo][6])^2/3.92^2),scale=((tmp[,hi][6]-tmp[,lo][6])^2/3.92^2)/tmp[,mid][6]),from=0,to=100)
 ## curve(dlnorm(x,tmp1$mu[6],tmp1$sig[6]),from=0,to=100)
-tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
-tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((tmp[,hi]-tmp[,lo])^2/3.92^2)/tmp[,mid],")")] #LN distributions
+# tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
+tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((tmp[,hi]-tmp[,lo])^2/3.92^2)/tmp[,mid],")")] # Beta distributions
 PE <- parse.parmtable(data.frame(tmp[,.(NAME, DISTRIBUTION)]))
 PSAE <- makePSA(nreps,PE) # PSAE = PSA effects
 PSAE[,id:=1:nrow(PSAE)]
@@ -674,7 +674,8 @@ tmp <- setDT(tmp)
 tmp <- tmp[1:3,]
 tmp1 <- getLNparms(tmp[,mid],(tmp[,hi]-tmp[,lo])^2/3.92^2,med=FALSE) #NOTE changed to mean vs median
 ## curve(dlnorm(x,tmp1$mu[3],tmp1$sig[3]),from=0,to=3)
-tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
+# tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
+tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((tmp[,hi]-tmp[,lo])^2/3.92^2)/tmp[,mid],")")] # Beta distributions
 PE <- parse.parmtable(data.frame(tmp[,.(NAME, DISTRIBUTION)]))
 PSAE <- makePSA(nreps,PE) # PSAE = PSA effects
 PSAE[,id:=1:nrow(PSAE)]
@@ -730,7 +731,7 @@ who_cfr <- data.table(
 pooled <- who_cfr[,.(alpha_who=sum(deaths)-1, beta_who=sum(cases)-sum(deaths)-1), by = .(iso3)]
 
 curve(dbeta(x,10499,33499),n=1e3)
-fac <- 5000 #how much weaker (same mean)? I want a>1 so there is a peak within interval
+fac <- 10000 #how much weaker (same mean)? I want a>1 so there is a peak within interval
 curve(dbeta(x,10499/fac,33499/fac),n=1e3)
 pooled <- pooled[,.(iso3, alpha_who=alpha_who/fac, beta_who=beta_who/fac)]
 
@@ -763,25 +764,38 @@ TCFR[,who_cfr:=rbeta(nrow(TCFR),alpha_who+deaths, beta_who+cases-deaths)] # who 
 TCFR[,id:=rep(1:nreps,nrow(TCFR)/nreps)]
 
 
-TCFR[,.(cfr=mean(cfr), who_cfr=mean(who_cfr)), by = .(iso3, arm)]
+TCFR[,.(cfr=mean(cfr), ltfu = mean(ltfu), who_cfr=mean(who_cfr)), by = .(iso3, arm)]
+
+TCFR[,.(cfr=mean(cfr), ltfu = mean(ltfu), cfrlftu=mean(cfr+(cfr*ltfu/cases)), who_cfr=mean(who_cfr)), by = .(iso3, arm)]
 # 
 # TCFR <- dcast(TCFR[,.(iso3,id,arm,cfr,who_cfr, ltfu, ltfu2)],
 #               iso3+id+ltfu~arm,value.var = c('cfr', 'who_cfr'), drop = FALSE)
-soc <- TCFR[arm=='SOC',.(iso3,id,arm,cfr_soc=cfr,who_cfr_soc=who_cfr, ltfu_soc=ltfu, ltfu2_soc=ltfu2)]
-int <- TCFR[arm!='SOC',.(iso3,id,arm,cfr_int=cfr,who_cfr_int=who_cfr, ltfu_int=ltfu, ltfu2_int=ltfu2)]
+soc <- TCFR[arm=='SOC',.(iso3,id,arm,cfr_soc=cfr,who_cfr_soc=who_cfr, cfr_ltfu_soc=cfr+(cfr*ltfu/cases), ltfu2_soc=ltfu2)]
+int <- TCFR[arm!='SOC',.(iso3,id,arm,cfr_int=cfr,who_cfr_int=who_cfr, cfr_ltfu_int=cfr+(cfr*ltfu/cases), ltfu2_int=ltfu2)]
 
-TCFR <- cbind(soc[,.(iso3,id,cfr_soc,who_cfr_soc, ltfu_soc, ltfu2_soc)],
-              int[,.(cfr_int,who_cfr_int, ltfu_int, ltfu2_int)])
+TCFR <- cbind(soc[,.(iso3,id,cfr_soc,who_cfr_soc, cfr_ltfu_soc, ltfu2_soc)],
+              int[,.(cfr_int,who_cfr_int, cfr_ltfu_int, ltfu2_int)])
+
+
+TCFR[,.(cfr_soc=mean(cfr_soc), cfr_ltfu_soc=mean(cfr_ltfu_soc), cfr_int=mean(cfr_int), cfr_ltfu_int=mean(cfr_ltfu_int)), by = .(iso3)]
 
 ## trial=based treatment success
 TSXS <- trt_outcomes[,.(iso3, arm, who_favourable, cases)]
 LTFU <- trt_outcomes[,.(iso3, arm, ltfu, ltfu2=ltfu+not_evaluated)]
 
+TSXS <- merge(TSXS,
+              LTFU,
+              by = c('iso3', 'arm'))
+
+TSXS[,.(sum(who_favourable)/sum(cases)), by = .(arm)]
+
 # set priors using pooled SOC data from the two countries
 pooled <- rbind(TSXS[arm=='SOC',.(alpha=sum(who_favourable)-1, beta=sum(cases)-sum(who_favourable)-1), by = .(arm)],
                 TSXS[arm=='SOC',.(arm='INT',alpha=sum(who_favourable)-1, beta=sum(cases)-sum(who_favourable)-1)])
 
+curve(dbeta(x,64, 13),n=1e3)
 fac <- 4 # how much weaker (same mean)? I want a>1 so there is a peak within interval
+curve(dbeta(x,64/fac,13/fac),n=1e3)
 pooled <- pooled[,.(arm, alpha=alpha/fac, beta=beta/fac)]
 
 TSXS <- merge(TSXS,
@@ -790,15 +804,19 @@ TSXS <- merge(TSXS,
 TSXS <- TSXS[rep(1:nrow(TSXS),each=nreps)]
 TSXS <- TSXS[,TSXS:=rbeta(nrow(TSXS),alpha+who_favourable, beta+cases-who_favourable)] # approx flat conjugate prior
 TSXS[,id:=rep(1:nreps,times=4)]
-TSXS <- dcast(TSXS[,.(iso3,id,arm,TSXS)],
-              iso3+id~arm,value.var = 'TSXS')
-names(TSXS)[names(TSXS)=='SOC'] <- 'who_soc'
-names(TSXS)[names(TSXS)=='INT'] <- 'who_int'
 
-TSXS[,.(TSXS=mean(who_soc), TSXSI=mean(who_int)), by = .(iso3)]
+soc <- TSXS[arm=='SOC',.(iso3,id,arm,SOC=TSXS,SOC_LTFU=TSXS + TSXS*ltfu/cases)]
+int <- TSXS[arm=='INT',.(iso3,id,arm,INT=TSXS,INT_LTFU=TSXS + TSXS*ltfu/cases)]
+
+TSXS <-cbind(soc[,.(iso3,id,arm,SOC,SOC_LTFU)], 
+             int[,.(INT,INT_LTFU)])
+
+TSXS[,.(TSXS=mean(SOC), TSXSL=mean(SOC_LTFU), TSXSI=mean(INT), TSXSIL=mean(INT_LTFU)), by = .(iso3)]
+TSXS[,.(mean(INT/SOC))]
+TSXS[,.(mean(INT/SOC)), by = .(iso3)]
 
 fn <- here('outdata/TCFR.Rdata')
-save(TCFR, TSXS,file=fn)
+save(TCFR, TSXS, file=fn)
 
 ## NOTE below here is WHO data and doesn't relate to costing
 ## === making CDRs and getting some relevant HIV data ===
