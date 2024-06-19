@@ -3,7 +3,7 @@
 set.seed(12345)
 
 ## flags for sensitivity analyses
-shell <- FALSE #whether running from shell script or not
+shell <- TRUE #whether running from shell script or not
 if(shell){
   ## running from shell
   args <- commandArgs(trailingOnly=TRUE)
