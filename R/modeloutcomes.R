@@ -1,4 +1,5 @@
 # rm(list=ls())
+# clean running file
 
 set.seed(12345)
 
