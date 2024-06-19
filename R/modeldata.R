@@ -94,9 +94,13 @@ for(DR in DRL){
 # complete cascade 
 # CASCP <- fread(here('indata/CASCP.csv')) # not disaggregated
 CASCP <- fread(here('indata/CASCPAGE.csv')) # disaggregated by age
+<<<<<<< HEAD
 # CASCP <- fread(here('indata/CASCPOAGE.csv')) # disaggregated by age & now including treatment success
 
 # CASCP[ ,arm:=ifelse(arm==0, 'SOC', 'INT')]
+=======
+
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 CASCP[country=='CMR' & age=='u2' & arm=='SOC']
 
 CASCP <- CASCP[, c('metric', 'dx'):=NULL]
@@ -126,9 +130,15 @@ unique(CASCP$variable)
 
 
 CASCP[,cascade:=factor(variable, 
+<<<<<<< HEAD
                        levels = c('presented', 'screened1', 'screened', 'presumptive', 'evaluated', 'bac.assess', 'Xpert', 'diagnosed', 'att'),
                        labels = c('Initial care seeking', 'Screened for TB symptoms', 'TB symptoms','Presumptive TB', 'Evaluated for TB', 
                                   'Bacteriologically assessed', 'Tested on Xpert', 'TB diagnosis', 'TB treatment'),
+=======
+                       levels = c('presented', 'screened1', 'screened', 'presumptive', 'evaluated', 'bac.assess', 'Xpert', 'diagnosed'),
+                       labels = c('Initial care seeking', 'Screened for TB symptoms', 'TB symptoms','Presumptive TB', 'Evaluated for TB', 
+                                  'Bacteriologically assessed', 'Tested on Xpert', 'TB diagnosis'),
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                        ordered = TRUE)]
 
 setkey(CASCP, country, age, arm, cascade, variable)
@@ -173,7 +183,11 @@ ggplot(ATR,aes(cascade,frac,color=arm,group=arm)) +
   facet_grid(country~age,scales='free')+
   xlab('') +
   scale_y_log10()+
+<<<<<<< HEAD
   ylab('Number per child successfully treated for TB (log scale)')+
+=======
+  ylab('Number per child treated for TB (log scale)')+
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
   theme_classic() + ggpubr::grids()+
   theme(axis.text.x = element_text(angle = 45, vjust = 1.0, hjust=1)) +
   scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 12))
@@ -632,6 +646,7 @@ tmp <- effects |>
   separate(lo,c("lo","hi"),"-") |>
   mutate_at(c("mid", "lo","hi"), as.numeric)
 tmp <- setDT(tmp)
+<<<<<<< HEAD
 tmp <- tmp[c(1:9,40:42)]
 tmp1 <- getLNparms(tmp[,mid],(tmp[,hi]-tmp[,lo])^2/3.92^2,med=FALSE) #NOTE changed to mean vs median
 curve(dlnorm(x,tmp1$mu[3],tmp1$sig[3]),from=0,to=10)
@@ -666,6 +681,18 @@ tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
 # txsx[,DISTRIBUTION:=paste0("LN(",txsx1$mu,",",txsx1$sig,")")] #LN distributions
 # 
 # tmp <- rbind(dig_effects,txsx)
+=======
+tmp <- tmp[1:9,]
+tmp1 <- getLNparms(tmp[,mid],(tmp[,hi]-tmp[,lo])^2/3.92^2,med=FALSE) #NOTE changed to mean vs median
+curve(dlnorm(x,tmp1$mu[6],tmp1$sig[6]),from=0,to=100)
+curve(dlnorm(x,tmp1$mu[9],tmp1$sig[9]),from=0,to=5)
+curve(dgamma(x,tmp1$mu[6],scale=tmp1$sig[6]),from=0,to=100)
+
+curve(dgamma(x,tmp[,mid][6]^2/((tmp[,hi][6]-tmp[,lo][6])^2/3.92^2),scale=((tmp[,hi][6]-tmp[,lo][6])^2/3.92^2)/tmp[,mid][6]),from=0,to=100)
+## curve(dlnorm(x,tmp1$mu[6],tmp1$sig[6]),from=0,to=100)
+# tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
+tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((tmp[,hi]-tmp[,lo])^2/3.92^2)/tmp[,mid],")")] # Beta distributions
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 PE <- parse.parmtable(data.frame(tmp[,.(NAME, DISTRIBUTION)]))
 PSAE <- makePSA(nreps,PE) # PSAE = PSA effects
 PSAE[,id:=1:nrow(PSAE)]
@@ -686,12 +713,15 @@ Parms[,DISTRIBUTION:=tmp$DISTRIBUTION]
 Parms[DISTRIBUTION=='LN(NA,NA)', DISTRIBUTION:=NA]
 Parms[,DISTRIBUTION:=paste0("LN(",round(tmp1$mu,5),",",round(tmp1$sig,5),")")] #LN distributions
 
+<<<<<<< HEAD
 Parms <- Parms |> 
   mutate(`MEDIAN (IQR)`=paste0(round(mid,5)," (",round(lo,5),"-",round(hi,5),")")) |> 
   select(NAME, DISTRIBUTION, `MEDIAN (IQR)`, DESCRIPTION, SOURCE)
 fn1 <- glue(here('outdata/TableS3')) + SA + '.csv'
 fwrite(Parms,file=fn1)
 
+=======
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 summary(PSAEL[country=='Cameroon',.(RR)])
 summary(PSAEL[country=='Kenya',.(RR)])
 
@@ -703,11 +733,16 @@ tmp <- effects |>
   separate(lo,c("lo","hi"),"-") |>
   mutate_at(c("mid", "lo","hi"), as.numeric)
 tmp <- setDT(tmp)
+<<<<<<< HEAD
 tmp <- tmp[c(1:3,41),]
+=======
+tmp <- tmp[1:3,]
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 tmp1 <- getLNparms(tmp[,mid],(tmp[,hi]-tmp[,lo])^2/3.92^2,med=FALSE) #NOTE changed to mean vs median
 ## curve(dlnorm(x,tmp1$mu[3],tmp1$sig[3]),from=0,to=3)
 # tmp[,DISTRIBUTION:=paste0("LN(",tmp1$mu,",",tmp1$sig,")")] #LN distributions
 tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((tmp[,hi]-tmp[,lo])^2/3.92^2)/tmp[,mid],")")] # Beta distributions
+<<<<<<< HEAD
 
 # dig_effects <- tmp[1:3]
 # dig_effects[,DISTRIBUTION:=paste0("G(",dig_effects[,mid]^2/((dig_effects[,hi]-dig_effects[,lo])^2/3.92^2),",",((dig_effects[,hi]-dig_effects[,lo])^2/3.92^2)/dig_effects[,mid],")")] # Beta distributions
@@ -717,6 +752,8 @@ tmp[,DISTRIBUTION:=paste0("G(",tmp[,mid]^2/((tmp[,hi]-tmp[,lo])^2/3.92^2),",",((
 # txsx[,DISTRIBUTION:=paste0("LN(",txsx1$mu,",",txsx1$sig,")")] #LN distributions
 # tmp <- rbind(dig_effects,txsx)
 
+=======
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 PE <- parse.parmtable(data.frame(tmp[,.(NAME, DISTRIBUTION)]))
 PSAE <- makePSA(nreps,PE) # PSAE = PSA effects
 PSAE[,id:=1:nrow(PSAE)]
@@ -737,9 +774,15 @@ ParmsP[,DISTRIBUTION:=tmp$DISTRIBUTION]
 ParmsP[DISTRIBUTION=='LN(NA,NA)', DISTRIBUTION:=NA]
 ParmsP[,DISTRIBUTION:=paste0("LN(",round(tmp1$mu,5),",",round(tmp1$sig,5),")")] #LN distributions
 
+<<<<<<< HEAD
 # ParmsTab3 <- rbind(ParmsP, Parms)     # save for later use in creating parameter tables for Appendix
 # fn1 <- glue(here('outdata/TableS3')) + SA + '.csv'
 # fwrite(ParmsTab3,file=fn1)
+=======
+ParmsTab3 <- rbind(ParmsP, Parms)     # save for later use in creating parameter tables for Appendix
+fn1 <- glue(here('outdata/TableS3')) + SA + '.csv'
+fwrite(ParmsTab3,file=fn1)
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 INTEP <- copy(PSAEL)
 fn <- here('outdata/INTE.Rdata')
@@ -808,6 +851,7 @@ TCFR[,id:=rep(1:nreps,nrow(TCFR)/nreps)]
 TCFR[,.(cfr=mean(cfr), ltfu = mean(ltfu), who_cfr=mean(who_cfr)), by = .(iso3, arm)]
 
 TCFR[,.(cfr=mean(cfr), ltfu = mean(ltfu), cfrlftu=mean(cfr+(cfr*ltfu/cases)), who_cfr=mean(who_cfr)), by = .(iso3, arm)]
+<<<<<<< HEAD
 
 # extract prior and mean CFRs for each arm
 CFR <- TCFR[,.(DISTRIBUTION=paste0("B(",round(mean(alpha),5),",",round(mean(beta),5),")"),
@@ -827,6 +871,16 @@ int <- TCFR[arm!='SOC',.(iso3,id,arm,cfr_int=cfr,who_cfr_int=who_cfr, cfr_ltfu_i
 
 TCFR <- cbind(soc[,.(iso3,id,cfr_soc,who_cfr_soc, cfr_ltfu_soc, ltfu_soc, ltfu2_soc)],
               int[,.(cfr_int,who_cfr_int, cfr_ltfu_int, ltfu_int, ltfu2_int)])
+=======
+# 
+# TCFR <- dcast(TCFR[,.(iso3,id,arm,cfr,who_cfr, ltfu, ltfu2)],
+#               iso3+id+ltfu~arm,value.var = c('cfr', 'who_cfr'), drop = FALSE)
+soc <- TCFR[arm=='SOC',.(iso3,id,arm,cfr_soc=cfr,who_cfr_soc=who_cfr, cfr_ltfu_soc=cfr+(cfr*ltfu/cases), ltfu2_soc=ltfu2)]
+int <- TCFR[arm!='SOC',.(iso3,id,arm,cfr_int=cfr,who_cfr_int=who_cfr, cfr_ltfu_int=cfr+(cfr*ltfu/cases), ltfu2_int=ltfu2)]
+
+TCFR <- cbind(soc[,.(iso3,id,cfr_soc,who_cfr_soc, cfr_ltfu_soc, ltfu2_soc)],
+              int[,.(cfr_int,who_cfr_int, cfr_ltfu_int, ltfu2_int)])
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 
 TCFR[,.(cfr_soc=mean(cfr_soc), cfr_ltfu_soc=mean(cfr_ltfu_soc), cfr_int=mean(cfr_int), cfr_ltfu_int=mean(cfr_ltfu_int)), by = .(iso3)]
@@ -839,7 +893,11 @@ TSXS <- merge(TSXS,
               LTFU,
               by = c('iso3', 'arm'))
 
+<<<<<<< HEAD
 TSXS[,.(sum(who_favourable)/sum(cases)), by = .(arm, iso3)]
+=======
+TSXS[,.(sum(who_favourable)/sum(cases)), by = .(arm)]
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 # set priors using pooled SOC data from the two countries
 pooled <- rbind(TSXS[arm=='SOC',.(alpha=sum(who_favourable)-1, beta=sum(cases)-sum(who_favourable)-1), by = .(arm)],
@@ -857,6 +915,7 @@ TSXS <- TSXS[rep(1:nrow(TSXS),each=nreps)]
 TSXS <- TSXS[,TSXS:=rbeta(nrow(TSXS),alpha+who_favourable, beta+cases-who_favourable)] # approx flat conjugate prior
 TSXS[,id:=rep(1:nreps,times=4)]
 
+<<<<<<< HEAD
 
 treatment_success <- TSXS[,.(DISTRIBUTION=paste0("B(",round(mean(alpha),5),",",round(mean(beta),5),")"),
                              tsxs=round(mean(TSXS),5), tsxs_lo=round(quantile(TSXS, 0.25),5), tsxs_hi=round(quantile(TSXS, 0.95),5)), by = .(iso3, arm)]
@@ -868,6 +927,8 @@ treatment_success <- treatment_success |>
 fn1 <- glue(here('outdata/treatment_success')) + '.csv'
 fwrite(treatment_success,file=fn1)
 
+=======
+>>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 soc <- TSXS[arm=='SOC',.(iso3,id,arm,SOC=TSXS,SOC_LTFU=TSXS + TSXS*ltfu/cases)]
 int <- TSXS[arm=='INT',.(iso3,id,arm,INT=TSXS,INT_LTFU=TSXS + TSXS*ltfu/cases)]
 
