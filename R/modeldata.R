@@ -2,18 +2,19 @@
 rm(list=ls())
 
 ## flags for sensitivity analyses
-shell <- FALSE #whether running from shell script or not
+shell <- FALSE # whether running from shell script or not
 if(shell){
   ## running from shell
   args <- commandArgs(trailingOnly=TRUE)
   print(args)
-  SA <- args[1]                  #none,base/lo/hi,cdr,txd
+  SA <- args[1]                  # none,base/lo/hi,cdr,txd
   if(SA == 'none'){
     SA <- ''
   } 
 } else { #set by hand
   rm(list=ls()) #clear all
   shell <- FALSE #whether running from shell script or not
+  
   ##sensitivity analyses (mostly for PT):
   ## '' = basecase assumes screening observed in TIPPI
   ## 'screen' = # assumes screening observed in TIPPI for SOC and all children presenting are screened for INT
