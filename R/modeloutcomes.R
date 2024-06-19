@@ -17,20 +17,13 @@ if(shell){
   shell <- FALSE #whether running from shell script or not
   
   ##sensitivity analyses 
-=======
-  shell <- FALSE #whether running from shell script or not
-  ##sensitivity analyses (mostly for PT):
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
   ## '' = basecase
   ## 'discr'='base'/'lo'/'hi'
   ## 'screen' = # assumes screening observed in TIPPI for SOC and all children presenting are screened for INT
   ## 'screenINT' = # assumes all children presenting are screened 
   ## 'txd' = making the completion influence tx outcome
   ## 'pooled_eff' = pooled intervention effect (not stratified by country)
-<<<<<<< HEAD
   
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
   sacases <- c('','lo','hi', 'screen', 'screenINT', 'cfrltfu', 'whocfr', 'systRev', 'systRevtxd', 'pooled_eff')
   SA <- sacases[1]
 }
@@ -51,17 +44,9 @@ gh <- function(x) glue(here(x))
 
 load(file=here('outdata/LYK.Rdata'))  # LYs discounted
 load(file=here('outdata/ART2age.Rdata')) # ATT cascade & costs NOTE 2 update w/costs
-<<<<<<< HEAD
 load(file=here('outdata/DBCage.Rdata')) # cascade ratios for int v soc
 load(file=here('outdata/ASM.Rdata')) # age splits from pre/post data
 load(file=here('outdata/H.Rdata')) # HIV by country from baseline data
-=======
-# load(file=here('outdata/CDR.Rdata')) # CDR
-load(file=here('outdata/DBCage.Rdata')) # cascade ratios for int v soc
-load(file=here('outdata/ASM.Rdata')) # age splits from pre/post data
-load(file=here('outdata/H.Rdata')) # HIV by country from baseline data
-# load(file=here('outdata/HIVtrial.Rdata')) # HIV by country from study data
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 load(file=here('outdata/cascadetop.Rdata')) # top cascade data
 load(file=here('outdata/INTE.Rdata')) # trial-based INT effects
 load(file=here('outdata/TCFR.Rdata')) # trial-based CFR
@@ -111,7 +96,6 @@ CFRdatam[,c('dN','dA'):=.(notx-ontx,notxHA-ontxHA)] #delta-CFR
 
 ## RRs
 if(SA=='pooled_eff'){
-<<<<<<< HEAD
   INTE <- INTE[country=='Both',]
 } else {
   INTE <- INTE[country!='Both',]
@@ -127,56 +111,18 @@ INTE[,median(txt.success),by=country]
 INTE[,mean(txt.success),by=country]
 summary(INTE[country=='Cameroon',.(txt.success)])
 summary(INTE[country=='Kenya',.(txt.success)])
-=======
-  INTE <- INTEP
-} else {
-  INTE <- INTE
-}
-
-## check
-INTE[country!='Both',median(RR),by=country]
-INTE[country!='Both',mean(RR),by=country]
-summary(INTE[country=='Cameroon',.(RR)])
-summary(INTE[country=='Kenya',.(RR)])
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 ##NOTE means and medians very different important, in particular mean>1 in CMR if fitted to median
 
 ## changes in ATT success
 nmz <- c('Cameroon', 'Kenya')
 txsuccess <- data.table(
   country=nmz,
-<<<<<<< HEAD
   SOC=c(1, 0.818),
-=======
-  BL=c(1, 0.818),
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
   INT=c(0.848, 0.976)
 )
 
 
 ## ==== cascades and costs
-<<<<<<< HEAD
-=======
-# DBC1 <- copy(DBC)  # assumes screening observed in TIPPI
-# 
-# # screening for TB symptoms sensitivity analysis
-# if(SA=='screen'){                        # assumes all children presenting are screened
-#   tmp <- cbind(DBC[metric=='Screened for TB symptoms',.(iso3, age, metric)],
-#                DBC[metric=='Initial care seeking',.(SOC,INT, ratio)])
-#   # tmp[,ratio:=INT/SOC]
-#   DBC1 <- rbind(DBC[metric!='Screened for TB symptoms'],
-#                 tmp)
-# }
-# 
-# if(SA=='screenINT'){                     # assumes screening observed in TIPPI for SOC and all children presenting are screened for INT
-#   # DBC <- DBC
-#   tmp <- cbind(DBC[metric=='Screened for TB symptoms',.(iso3, age, metric, SOC)],
-#                DBC[metric=='Initial care seeking',.(INT)])
-#   tmp[,ratio:=INT/SOC]
-#   DBC1 <- rbind(DBC[metric!='Screened for TB symptoms'],
-#                 tmp)
-# } 
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 if (SA=='screen') {            # assumes all children presenting are screened
   tmp <- cbind(DBC[metric=='Screened for TB symptoms',.(iso3, age, metric)],
@@ -247,16 +193,10 @@ names(T)[names(T)=='Baseline'] <- 'frac'
 names(T)[names(T)=='Intervention'] <- 'fracI'
 
 ## merge in effects
-<<<<<<< HEAD
 INTE |> select(country) |> table()
 if(length(unique(INTE$country))==1){                        
   T <- merge(T,
              INTE[country=='Both',.(id, RR, RRevalTB, RRpresTB, txt.success)],
-=======
-if(length(unique(INTE$country))==1){                        
-  T <- merge(T,
-             INTE[,country:=NULL],
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
              by=c('id'))
 } else {
   T <- merge(T,
@@ -300,13 +240,6 @@ T[,hiv:=rgamma(nrow(T),
                scale = hiv.sd^2/(hiv+1e-6))]
 T[,.(hiv=mean(hiv), hiv.sd=mean(hiv.sd)), by = .(country)]
 
-<<<<<<< HEAD
-=======
-# # hiv from study
-# T <- merge(T,HIVtrial[,.(id,iso3,age,hiv, hiv.int)],
-#            by=c('id','age','iso3'),all.x = TRUE)
-
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 ## merge in LYS
 if(SA %in% c('hi','lo')){
   sa.drn <- ifelse(SA=='lo',0,5)
@@ -318,43 +251,9 @@ T <- merge(T,LYK[,.(iso3,age,LYS,LYS0)],by=c('iso3','age'),all.x=TRUE)
 ## ================= CALCULATIONS ===================
 T[,CFRnotx:=notx*(1-hiv) + notxHA*hiv]
 
-<<<<<<< HEAD
 if (SA=='cfrltfu') {
   T[,CFRtx:=cfr_int + CFRnotx*ltfu_int]
   T[,CFRtx.soc:=cfr_soc + CFRnotx*ltfu_soc]
-=======
-# trial-based CFR
-# if(SA=='cfrltfu'){   
-#   T[,CFRtx:=cfr_int + cfr_int*ltfu_int]
-#   T[,CFRtx.soc:=cfr_soc + cfr_soc*ltfu_soc]
-# } else {
-#   T[,CFRtx:=cfr_int] 
-#   T[,CFRtx.soc:=cfr_soc]
-# }
-# 
-# 
-# # WHO-based CFR
-# if(SA=='whocfr'){   
-#   T[,CFRtx:=who_cfr_int]
-#   T[,CFRtx.soc:=who_cfr_soc]
-# } else {
-#   T[,CFRtx:=cfr_int] 
-#   T[,CFRtx.soc:=cfr_soc]
-# }
-# 
-# # literature-based CFR - original setup which had poor results for Kenya
-# if(SA=='systRev'){   
-#   T[,CFRtx:=ontx*(1-hiv) + ontxHA*hiv]
-#   T[,CFRtx.soc:=CFRtx]
-# } else {
-#   T[,CFRtx:=cfr_int] 
-#   T[,CFRtx.soc:=cfr_soc]
-# }
-
-if (SA=='cfrltfu') {
-    T[,CFRtx:=cfr_ltfu_int]
-    T[,CFRtx.soc:=cfr_ltfu_soc]
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 } else if (SA=='whocfr') {
   T[,CFRtx:=who_cfr_int]
   T[,CFRtx.soc:=who_cfr_soc]
@@ -369,7 +268,6 @@ if (SA=='cfrltfu') {
   T[,CFRtx.soc:=cfr_soc]
 }
 
-<<<<<<< HEAD
 # (cfr <- T[,.(
 #   cfr.soc=mean(CFRtx.soc),
 #   cfr.soc.ltfu=mean(cfr_ltfu_soc),
@@ -380,18 +278,6 @@ if (SA=='cfrltfu') {
 #   cfr.systRev.soc=mean((ontx*(1-hiv) + ontxHA*hiv)*(1-SOC)/(1-INT)),
 #   cfr.systRev.int=mean(ontx*(1-hiv) + ontxHA*hiv)),
 #   by=.(iso3)])
-=======
-(cfr <- T[,.(
-  cfr.soc=mean(CFRtx.soc),
-  cfr.soc.ltfu=mean(cfr_ltfu_soc),
-  cfr.soc.who=mean(who_cfr_soc),
-  cfr.int=mean(CFRtx),
-  cfr.int.ltfu=mean(cfr_ltfu_int),
-  cfr.int.who=mean(who_cfr_int),
-  cfr.systRev.soc=mean((ontx*(1-hiv) + ontxHA*hiv)*(1-SOC)/(1-INT)),
-  cfr.systRev.int=mean(ontx*(1-hiv) + ontxHA*hiv)),
-  by=.(iso3)])
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 ## NOTE this is important - if not tx mortality effect, KEN effect is -ve; with it +ve
 ## T[,CFRtx:=ontx*(1-hiv) + ontxHA*hiv]
@@ -425,7 +311,6 @@ txsuccess
 T[,.(dCost=mean(dCost),dDALY=mean(dDALY)),by=country]
 T[,.(ICER=mean(dCost)/mean(dDALY)),by=country]
 
-<<<<<<< HEAD
 # ## CE plot
 # xyplot(data=T,dCost ~ dDALY | country,
 #        group=country,
@@ -434,16 +319,6 @@ T[,.(ICER=mean(dCost)/mean(dDALY)),by=country]
 #          panel.abline(h=0)
 #          panel.abline(v=0)
 #        })
-=======
-## CE plot
-xyplot(data=T,dCost ~ dDALY | country,
-       group=country,
-       panel=function(...) {
-         panel.xyplot(...)
-         panel.abline(h=0)
-         panel.abline(v=0)
-       })
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 # consider putting this into another file
 T <- merge(T,
@@ -459,15 +334,12 @@ T1 <- T[,.(cost.soc=sum(costt.soc*frac),
            symptoms.int=sum(symptoms.soc*RRpresTB),
            evaluated.int=sum(evaluated.soc*RRevalTB),
            tx=sum(RR*frac),
-<<<<<<< HEAD
            txsucess.soc=sum(frac*SOC),
            txsucess.int=sum(RR*frac*INT),
            # txsucess.soc=ifelse(iso3=='KEN',sum(frac*0.82), sum(frac*1)),
            # txsucess.int=ifelse(iso3=='KEN',sum(RR*frac*0.82*txt.success), sum(RR*frac*1*txt.success)),
            # txsucess.soc=sum(frac),
            # txsucess.int=sum(RR*frac*txt.success),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
            deaths.soc=sum(deaths.soc*frac),
            deaths.int=sum(deaths.int*frac),
            LYL.soc=sum(LYL.soc*frac),
@@ -478,10 +350,7 @@ T1 <- T[,.(cost.soc=sum(costt.soc*frac),
            dDALY0=sum(dDALY0*frac),
            dDALY=sum(dDALY*frac)),
         by=.(country,id)]
-<<<<<<< HEAD
 # T1[,txsucess.int:=tx*txsucess.int]
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 ## T[,mean(RR-1),by=.(country,age)]
 T1 <- merge(T1,CK,by='country') #country iso3 merged on
 
@@ -494,7 +363,6 @@ T2 <- T[,.(cost.soc=(costt.soc),
            symptoms.int=sum(symptoms.soc*RRpresTB),
            evaluated.int=sum(evaluated.soc*RRevalTB),
            tx = RR,
-<<<<<<< HEAD
            txsucess.soc=SOC,
            txsucess.int=RR*INT,
            # txsucess.soc=ifelse(iso3=='KEN',sum(frac*0.82), sum(frac*1)),
@@ -502,9 +370,6 @@ T2 <- T[,.(cost.soc=(costt.soc),
            ## deaths.soc=((deaths.int+LS)),
            # txsucess.soc=frac,
            # txsucess.int=RR*frac*txt.success,
-=======
-           ## deaths.soc=((deaths.int+LS)),
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
            deaths.soc=(deaths.soc),
            deaths.int=(deaths.int),
            LYL.soc=(LYL.soc),
@@ -515,10 +380,7 @@ T2 <- T[,.(cost.soc=(costt.soc),
            dDALY0=(dDALY0),
            dDALY=(dDALY)),
         by=.(country,id,age)]
-<<<<<<< HEAD
 # T2[,txsucess.int:=tx*txsucess.int]
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 T2 <- merge(T2,CK,by='country') #country iso3 merged on
 
 ## CEA plot
@@ -594,7 +456,6 @@ ice <- T1[,
             tx=mean(tx),
             tx.lo=lof(tx),
             tx.hi=hif(tx),
-<<<<<<< HEAD
             txsuccess.soc=mean(txsucess.soc),
             txsuccess.soc.lo=lof(txsucess.soc),
             txsuccess.soc.hi=hif(txsucess.soc),
@@ -604,8 +465,6 @@ ice <- T1[,
             # txsuccess.int=mean(tx)*txsucess.int,
             # txsuccess.int.lo=lof(tx)*txsucess.int,
             # txsuccess.int.hi=hif(tx)*txsucess.int,
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
             ## deaths
             deaths.soc=mean(deaths.soc),
             deaths.soc.lo=lof(deaths.soc),
@@ -652,26 +511,17 @@ icer <- ice[,.(country=country,
                symptoms.soc =symptoms.soc,
                evaluated.soc = evaluated.soc,
                treated.soc=100,         #NOTE normalized to 100
-<<<<<<< HEAD
                treatment.success.soc=bracket(txsuccess.soc,txsuccess.soc.lo,txsuccess.soc.hi),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                cost.soc = bracket(cost.soc,cost.soc.lo,cost.soc.hi),
                symptoms.int = bracket(symptoms.int, symptoms.int.lo, symptoms.int.hi),
                evaluated.int = bracket(evaluated.int, evaluated.int.lo, evaluated.int.hi),
                treated.int=bracket(tx,tx.lo,tx.hi),
-<<<<<<< HEAD
                treatment.success.int=bracket(txsuccess.int,txsuccess.int.lo,txsuccess.int.hi),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                cost.int = bracket(cost.int,cost.int.lo,cost.int.hi),
                symptoms.dif=bracket(symptoms.int-symptoms.soc,symptoms.int.lo-symptoms.soc,symptoms.int.hi-symptoms.soc), #NOTE also 100
                evaluated.dif=bracket(evaluated.int-evaluated.soc,evaluated.int.lo-evaluated.soc,evaluated.int.hi-evaluated.soc), #NOTE also 100
                treated.dif=bracket(tx-1e2,tx.lo-1e2,tx.hi-1e2), #NOTE also 100
-<<<<<<< HEAD
                treatment.success.dif=bracket(txsuccess.int-txsuccess.soc, txsuccess.int.lo-txsuccess.soc,txsuccess.int.hi-txsuccess.soc),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                cost.dif=bracket(Dcost,Dcost.lo,Dcost.hi),
                deaths.soc = bracket(deaths.soc,deaths.soc.lo,deaths.soc.hi),
                LYL.soc = bracket(LYL.soc,LYL.soc.lo,LYL.soc.hi),
@@ -702,15 +552,9 @@ fwrite(icebrr,file=fn)
 
 ## --table 2 format
 Table2ATT <- icer[,.(country,
-<<<<<<< HEAD
                      symptoms.soc, evaluated.soc, treated.soc, treatment.success.soc,cost.soc, 
                      symptoms.int,evaluated.int, treated.int, treatment.success.int, cost.int,
                      diff.symptoms=symptoms.dif, diff.evaluated=evaluated.dif,diff.treated=treated.dif, diff.treatment.success=treatment.success.dif,
-=======
-                     symptoms.soc, evaluated.soc, treated.soc,cost.soc, 
-                     symptoms.int,evaluated.int, treated.int, cost.int,
-                     diff.symptoms=symptoms.dif, diff.evaluated=evaluated.dif,diff.treated=treated.dif,
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                      deaths.soc, deaths.int,
                      diff.deaths=deaths.dif,
                      LYL.soc, LYL.int,
@@ -740,13 +584,8 @@ names(d)[3] <- 'Increment'
 merged <- merge(soc, int, by=c('country', 'variable'), all.x = TRUE, all.y = TRUE)
 merged <- merge(merged, d,by=c('country', 'variable'), all.x = TRUE, all.y = TRUE)
 
-<<<<<<< HEAD
 vars <- c('symptoms', 'evaluated', "treated", 'treatment.success', "deaths", "LYL0","LYL","cost","ICER")
 var_labs <- c('symptoms', 'evaluated', "treated", 'treatment.success', "deaths", "LYL0","LYL","cost","ICER")
-=======
-vars <- c('symptoms', 'evaluated', "treated", "deaths", "LYL0","LYL","cost","ICER")
-var_labs <- c('symptoms', 'evaluated', "treated", "deaths", "LYL0","LYL","cost","ICER")
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 
 merged$variable <- factor(merged$variable, 
                           levels = vars)   
@@ -780,7 +619,6 @@ iceage <- T2[,
                evaluated.int.hi=hif(evaluated.int),
                tx=mean(tx),
                tx.lo=lof(tx),
-<<<<<<< HEAD
                tx.hi=hif(tx),           
                txsuccess.soc=mean(txsucess.soc),
                txsuccess.soc.lo=lof(txsucess.soc),
@@ -788,9 +626,6 @@ iceage <- T2[,
                txsuccess.int=mean(txsucess.int),
                txsuccess.int.lo=lof(txsucess.int),
                txsuccess.int.hi=hif(txsucess.int),
-=======
-               tx.hi=hif(tx),
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                ## deaths
                deaths.soc=mean(deaths.soc),
                deaths.soc.lo=lof(deaths.soc),
@@ -834,26 +669,17 @@ icers <- iceage[,.(country=country,age,
                    symptoms.soc =symptoms.soc,
                    evaluated.soc = evaluated.soc,
                    treated.soc=100,         #NOTE normalized to 100
-<<<<<<< HEAD
                    treatment.success.soc=bracket(txsuccess.soc,txsuccess.soc.lo,txsuccess.soc.hi),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                    cost.soc = bracket(cost.soc,cost.soc.lo,cost.soc.hi),
                    symptoms.int = bracket(symptoms.int, symptoms.int.lo, symptoms.int.hi),
                    evaluated.int = bracket(evaluated.int, evaluated.int.lo, evaluated.int.hi),
                    treated.int=bracket(tx,tx.lo,tx.hi),
-<<<<<<< HEAD
                    treatment.success.int=bracket(txsuccess.int,txsuccess.int.lo,txsuccess.int.hi),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                    cost.int = bracket(cost.int,cost.int.lo,cost.int.hi),
                    symptoms.dif=bracket(symptoms.int-symptoms.soc,symptoms.int.lo-symptoms.soc,symptoms.int.hi-symptoms.soc), #NOTE also 100
                    evaluated.dif=bracket(evaluated.int-evaluated.soc,evaluated.int.lo-evaluated.soc,evaluated.int.hi-evaluated.soc), #NOTE also 100
                    treated.dif=bracket(tx-1e2,tx.lo-1e2,tx.hi-1e2), #NOTE also 100
-<<<<<<< HEAD
                    treatment.success.dif=bracket(txsuccess.int-txsuccess.soc, txsuccess.int.lo-txsuccess.soc,txsuccess.int.hi-txsuccess.soc),
-=======
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
                    cost.dif=bracket(Dcost,Dcost.lo,Dcost.hi),
                    deaths.soc = bracket(deaths.soc,deaths.soc.lo,deaths.soc.hi),
                    LYL.soc = bracket(LYL.soc,LYL.soc.lo,LYL.soc.hi),
@@ -1073,22 +899,14 @@ fn1 <- glue(here('plots/CEACO')) + SA + '.png'
 ## fn2 <- glue(here('plots/CEAC')) + SAT + '.pdf'
 ggsave(CEAC,file=fn1,w=7,h=7); ## ggsave(CEAC,file=fn2,w=7,h=7)
 
-<<<<<<< HEAD
 
-=======
-# 
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 # ## ---- drivers by variable
 # 
 # ## frac, RR, ratios, LE
 # ## X <- S[age=='0-1',.(iso3,frac)]         #frac
 # ## X <- merge(X,CK,by='iso3')
 # X <- ASM[qty=='present' & arm=='SOC',
-<<<<<<< HEAD
 #          .(iso3,frac=`0-1`/(`0-1`+`2-4`))]
-=======
-#          .(iso3,frac=`0-2`/(`0-2`+`3-5`))]
->>>>>>> d63716329784df773c4f5e756df4c1f11297377d
 # tmp <- T[,.(RR=mean(RR)),by=.(iso3,age)]
 # tmp <- dcast(tmp,iso3~age)
 # names(tmp)[2:3] <- paste0('RR',names(tmp)[2:3])
