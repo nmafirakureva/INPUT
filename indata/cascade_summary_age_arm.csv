@@ -1,0 +1,17 @@
+cascade,age,Arm,CMR,KEN
+presented,u2,0,38187,60438
+presented,u2,1,45036,44861
+presented,o2,0,5588,17696
+presented,o2,1,7205,12512
+presumptive TB (screened),u2,0,28,225
+presumptive TB (screened),u2,1,483,192
+presumptive TB (screened),o2,0,48,191
+presumptive TB (screened),o2,1,307,168
+presumptive TB (enrolled),u2,0,14,61
+presumptive TB (enrolled),u2,1,291,69
+presumptive TB (enrolled),o2,0,13,45
+presumptive TB (enrolled),o2,1,178,72
+TB diagnosed,u2,0,1,49
+TB diagnosed,u2,1,19,25
+TB diagnosed,o2,0,1,28
+TB diagnosed,o2,1,14,16

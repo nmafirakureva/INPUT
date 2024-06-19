@@ -1,0 +1,37 @@
+iso3,age_cat,study_phase,cascade,cascade_cost,cost.m,cost.sd,cost.lo,cost.hi
+CMR,u2,1,screening,Initial care seeking,2.04,2.2,0.46,5.47
+CMR,u2,1,diagnosis,TB investigations,16.19,16.3,2.29,52.53
+CMR,u2,1,att,DSTB treatment,126.29,,126.29,126.29
+CMR,u2,2,screening,Initial care seeking,1.99,2.35,0.46,5.93
+CMR,u2,2,diagnosis,TB investigations,127.31,59.06,34.06,209.92
+CMR,u2,2,att,DSTB treatment,384.96,,384.96,384.96
+CMR,u2,3,screening,Initial care seeking,2.87,2.52,0.45,6.02
+CMR,u2,3,diagnosis,TB investigations,163.13,48.18,35,208.43
+CMR,u2,3,att,DSTB treatment,400.33,150.66,159.21,649.62
+CMR,o2,1,screening,Initial care seeking,1.39,1.85,0.46,5.56
+CMR,o2,1,diagnosis,TB investigations,15.05,10.56,4.4,35.41
+CMR,o2,1,att,DSTB treatment,103.83,,103.83,103.83
+CMR,o2,2,screening,Initial care seeking,2.02,2.25,0.45,5.51
+CMR,o2,2,diagnosis,TB investigations,143.65,59.35,42.51,204.83
+CMR,o2,2,att,DSTB treatment,325.56,,325.56,325.56
+CMR,o2,3,screening,Initial care seeking,2.59,2.49,0.45,5.91
+CMR,o2,3,diagnosis,TB investigations,166.88,41.02,35.12,215.23
+CMR,o2,3,att,DSTB treatment,333.13,153.72,184.49,671.83
+KEN,u2,1,screening,Initial care seeking,7.4,2.86,4.23,13.88
+KEN,u2,1,diagnosis,TB investigations,25.2,20.43,2.71,73.69
+KEN,u2,1,att,DSTB treatment,324.47,144.36,131,697.31
+KEN,u2,2,screening,Initial care seeking,5.52,2.16,4.33,8.44
+KEN,u2,2,diagnosis,TB investigations,61.13,41.84,16.42,88.14
+KEN,u2,2,att,DSTB treatment,427.57,77.63,375.42,479.72
+KEN,u2,3,screening,Initial care seeking,7.15,3.6,4.17,13.88
+KEN,u2,3,diagnosis,TB investigations,84.85,39.94,4.62,132.67
+KEN,u2,3,att,DSTB treatment,357.75,122.36,179.59,564.22
+KEN,o2,1,screening,Initial care seeking,8.3,3.09,4.2,13.88
+KEN,o2,1,diagnosis,TB investigations,26.67,20.75,3.36,75
+KEN,o2,1,att,DSTB treatment,319.42,143.16,130.44,642.94
+KEN,o2,2,screening,Initial care seeking,8.32,2.62,4.3,12.63
+KEN,o2,2,diagnosis,TB investigations,99.05,30.63,34.23,128.77
+KEN,o2,2,att,DSTB treatment,435.04,140.7,190.84,690.04
+KEN,o2,3,screening,Initial care seeking,7.08,3.57,4.18,14.07
+KEN,o2,3,diagnosis,TB investigations,91.16,38.93,3.27,145.58
+KEN,o2,3,att,DSTB treatment,435.04,140.7,190.84,690.04
